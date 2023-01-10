@@ -1,0 +1,19 @@
+footer {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #009688;
+}
+
+.footer__container {
+  position: relative;
+  margin-top: 16px;
+  bottom: 0;
+}
+
+.foot__link {
+  text-decoration: none;
+  color: #fff;
+}
