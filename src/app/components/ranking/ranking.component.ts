@@ -1,5 +1,6 @@
+import { RankingService } from '../../../services/ranking.service';
 import { Ranking } from './../../../models/ranking.models';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-ranking',
@@ -7,11 +8,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./ranking.component.css']
 })
 
-export class RankingComponent {
-  ELEMENT_DATA: Ranking[] = [
-  {position: "1", name: 'arnold', points: 1000}
-  ];
+export class RankingComponent implements OnInit {
+
+  constructor(private service: RankingService) {}
+  ngOnInit(): void {
+    this.getRanking()
+  }
+  ranking: Ranking[] = [];
 
   displayedColumns: string[] = ['position', 'name', 'points'];
-  dataSource = this.ELEMENT_DATA;
+  dataSource: Ranking[] = [];
+
+  getRanking(){
+    this.ranking = this.service.getRanking()
+    this.dataSource = this.ranking
+  }
 }
