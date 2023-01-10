@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Ranking } from 'src/models/ranking.models';
+import { HttpClient } from '@angular/common/http';
+import { Results } from 'src/models/results.models';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RankingService {
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
+  private readonly API = 'http://localhost:3000/results';
 
-  getRanking(): Ranking[]{
-    return [{position: "1", name: 'arnold', points: 1000}]
+  getResults(): Observable<Results[]>{
+    return this.http.get<Results[]>(this.API);
   }
 
-  
+
+
 }

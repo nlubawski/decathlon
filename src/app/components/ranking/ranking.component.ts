@@ -1,6 +1,7 @@
 import { RankingService } from '../../../services/ranking.service';
 import { Ranking } from './../../../models/ranking.models';
 import { Component, OnInit } from '@angular/core';
+import { Results } from 'src/models/results.models';
 
 @Component({
   selector: 'app-ranking',
@@ -14,13 +15,13 @@ export class RankingComponent implements OnInit {
   ngOnInit(): void {
     this.getRanking()
   }
-  ranking: Ranking[] = [];
+  results: Results[] = [];
 
   displayedColumns: string[] = ['position', 'name', 'points'];
   dataSource: Ranking[] = [];
 
   getRanking(){
-    this.ranking = this.service.getRanking()
-    this.dataSource = this.ranking
+    this.service.getResults().subscribe()
+    
   }
 }
