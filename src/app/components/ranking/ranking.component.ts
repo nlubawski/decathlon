@@ -1,8 +1,10 @@
 import { PointingService } from './../../../services/pointing.service';
 import { RankingService } from '../../../services/ranking.service';
 import { Ranking } from './../../../models/ranking.models';
+import { Performance } from './../../../models/performance.models';
 import { Component, OnInit } from '@angular/core';
 import { Results } from 'src/models/results.models';
+import { Pointing } from 'src/models/pointing.models';
 
 @Component({
   selector: 'app-ranking',
@@ -16,18 +18,114 @@ export class RankingComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getRanking();
-    this.getPointing();
+    this.getResults();
   }
+
   results: Results[] = [];
+  pointing: Pointing[] = [];
+  ranking: Ranking[] = [];
+  performances: Performance[] = [];
 
   displayedColumns: string[] = ['position', 'name', 'points'];
   dataSource: Ranking[] = [];
 
-  getRanking() {
-    this.serviceRanking.getResults().subscribe();
+  getResults() {
+    this.serviceRanking.getResults().subscribe((element) => {
+      this.results = element;
+      this.getPointing();
+    });
   }
+
   getPointing() {
-    this.servicePointing.getPointing().subscribe();
+    this.servicePointing.getPointing().subscribe((element) => {
+      this.pointing = element;
+      this.getRanking();
+    });
+  }
+
+  getRanking() {
+    this.results.forEach((element: any) => {
+      const { athlete, results } = element;
+      let resultAux = 0;
+      const performace: Performance = { athlete, result: 0, position: '0' };
+      results.forEach((res: any) => {
+        let { type, result } = res;
+        const calc = this.pointing.find((item) => {
+          return item.event === type;
+        });
+        if (calc) {
+          if (calc?.type === 'field') {
+            if (
+              calc.event === 'Long jump' ||
+              calc.event === 'High jump' ||
+              calc.event === 'Pole vault'
+            ) {
+              result = result * 100;
+            }
+            resultAux += Math.round(calc.A * Math.pow(result - calc.B, calc.C));
+            performace.result += resultAux;
+          } else if (calc?.type === 'track') {
+            if (type === '1500 m') {
+              result =
+                parseFloat(result.split(':')[0]) * 60 +
+                parseFloat(result.split(':')[1]);
+              resultAux += Math.round(
+                calc.A * Math.pow(calc.B - result, calc.C)
+              );
+            } else if (type === '100 m') {
+              resultAux += Math.round(
+                (calc.A / 10) * Math.pow(calc.B - result, calc.C)
+              );
+            } else if (type === '400 m' || type === '100 m hurdles') {
+              resultAux += Math.round(
+                (calc.A / 100) * Math.pow(calc.B - result, calc.C)
+              );
+            } else {
+              resultAux += Math.round(
+                calc.A * Math.pow(calc.B - result, calc.C)
+              );
+            }
+          }
+        }
+      });
+      performace.result = resultAux;
+      this.performances.push(performace);
+    });
+    this.performances.sort((a, b) => b.result - a.result);
+
+    let i = 0;
+    let positionCount = 1;
+    while (i < this.performances.length) {
+      let inicial = this.performances[i].result;
+      console.log('inicial', inicial);
+      let notFound = false;
+      for (let j = i + 1; j < this.performances.length; j++) {
+        if (inicial === this.performances[j].result) {
+          positionCount++;
+          notFound = true;
+        }
+      }
+      if (!notFound) {
+        positionCount++;
+      }
+      let position = '';
+      for (let k = i; k < positionCount -1; k++) {
+        position += `${k+1}-`;
+      }
+      position = position.slice(0, -1);
+      for (let k = i; k < positionCount -1; k++) {
+        console.log('k', k);
+        this.performances[k].position = position;
+      }
+      i += 1
+    }
+
+    this.dataSource = this.performances.map(item =>{
+      return {
+          name: item.athlete,
+          points: item.result,
+          position: item.position,
+}
+    });
   }
 }
