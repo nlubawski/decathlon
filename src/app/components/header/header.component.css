@@ -1,0 +1,11 @@
+header{
+  height: 10%;
+}
+
+.header__toolbar{
+  background-color: #009688;
+}
+
+.header__title{
+  padding-left: 1em;
+}

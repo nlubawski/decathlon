@@ -1,0 +1,12 @@
+<header>
+  <mat-toolbar class="header__toolbar">
+    <button mat-button [matMenuTriggerFor]="menu" >
+      <img src="./../../../assets/img/hamburguer.png" alt="Imagem do menu hamburguer">
+    </button>
+    <mat-menu #menu="matMenu" yPosition="below">
+      <button mat-menu-item>Ranking</button>
+      <button mat-menu-item>Sobre Mim</button>
+    </mat-menu>
+    <span class="header__title">Decathlon</span>
+  </mat-toolbar>
+</header>
