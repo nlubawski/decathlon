@@ -12,6 +12,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { AboutMeComponent } from './components/about-me/about-me.component';
 import { RankingComponent } from './components/ranking/ranking.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 
@@ -24,7 +25,8 @@ import { RankingComponent } from './components/ranking/ranking.component';
     FooterComponent,
     HomeComponent,
     AboutMeComponent,
-    RankingComponent
+    RankingComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,4 @@
+import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutMeComponent } from './components/about-me/about-me.component';
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'ranking',
     component: RankingComponent
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
   }
 ];
 
