@@ -11,6 +11,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { AboutMeComponent } from './components/about-me/about-me.component';
+import { RankingComponent } from './components/ranking/ranking.component';
 
 
 
@@ -22,7 +23,8 @@ import { AboutMeComponent } from './components/about-me/about-me.component';
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    AboutMeComponent
+    AboutMeComponent,
+    RankingComponent
   ],
   imports: [
     BrowserModule,
