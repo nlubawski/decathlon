@@ -93,39 +93,37 @@ export class RankingComponent implements OnInit {
     });
     this.performances.sort((a, b) => b.result - a.result);
 
-    let i = 0;
-    let positionCount = 1;
-    while (i < this.performances.length) {
-      let inicial = this.performances[i].result;
-      console.log('inicial', inicial);
-      let notFound = false;
-      for (let j = i + 1; j < this.performances.length; j++) {
-        if (inicial === this.performances[j].result) {
-          positionCount++;
-          notFound = true;
+    for (let i = 0; i < this.performances.length; i++) {
+      let count = i
+      if(i > 0 && this.performances[i].position !== '0'){
+        count++
+        continue;
+      }else{
+        if(i === this.performances.length -1){
+          count++;
+        }
+        for (let j = i + 1; j < this.performances.length; j++) {
+        if (this.performances[i].result === this.performances[j].result) {
+          count++;
         }
       }
-      if (!notFound) {
-        positionCount++;
-      }
       let position = '';
-      for (let k = i; k < positionCount -1; k++) {
-        position += `${k+1}-`;
+      for (let j = i + 1; j <= count + 1; j++) {
+        position += `${j}-`;
       }
       position = position.slice(0, -1);
-      for (let k = i; k < positionCount -1; k++) {
-        console.log('k', k);
-        this.performances[k].position = position;
+      for (let k = i + 1; k <= count + 1; k++) {
+        this.performances[k - 1].position = position;
       }
-      i += 1
+      }
     }
 
-    this.dataSource = this.performances.map(item =>{
+    this.dataSource = this.performances.map((item) => {
       return {
-          name: item.athlete,
-          points: item.result,
-          position: item.position,
-}
+        name: item.athlete,
+        points: item.result,
+        position: item.position,
+      };
     });
   }
 }
