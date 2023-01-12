@@ -5,6 +5,7 @@ import { Performance } from './../../../models/performance.models';
 import { Component, OnInit } from '@angular/core';
 import { Results } from 'src/models/results.models';
 import { Pointing } from 'src/models/pointing.models';
+import { ExportToCsv } from 'export-to-csv';
 
 @Component({
   selector: 'app-ranking',
@@ -129,4 +130,25 @@ export class RankingComponent implements OnInit {
       };
     });
   }
+
+    options : any= {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    showTitle: true,
+    title: 'Ranking',
+    useTextFile: false,
+    useBom: true,
+    useKeysAsHeaders: true,
+    }
+
+    csvExporter: ExportToCsv = new ExportToCsv(this.options);
+
+    getCsv(){
+      this.csvExporter.generateCsv(this.dataSource);
+    }
+
+
+
 }
